@@ -1,0 +1,18 @@
+﻿# 临时文件 / 备忘
+待完成.txt
+*.tmp
+*.bak
+
+# 系统 / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Playwright 调试产物
+.playwright-mcp/
+*.png
+!favicon.png
+
+# Node（虽然零构建，但留作扩展空间）
+node_modules/

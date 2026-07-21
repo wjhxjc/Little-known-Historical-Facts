@@ -1,0 +1,98 @@
+﻿// js/timeline.js — 时间线页渲染逻辑
+// 依赖：window.FACTS（来自 facts.js）
+// 功能：按 8 朝代分组（先秦/秦汉/魏晋南北朝/隋唐/宋/元/明/清），空缺朝代显示"暂未收录"
+
+(function () {
+  "use strict";
+
+  if (!window.FACTS || !Array.isArray(window.FACTS)) {
+    console.error("FACTS 数据未加载");
+    return;
+  }
+
+  var FACTS = window.FACTS;
+  var container = document.getElementById("timelineContainer");
+
+  // 8 朝代固定顺序
+  var DYNASTIES = [
+    { name: "先秦",     range: "前 2070 — 前 221" },
+    { name: "秦汉",     range: "前 221 — 220" },
+    { name: "魏晋南北朝", range: "220 — 589" },
+    { name: "隋唐",     range: "581 — 907" },
+    { name: "宋",       range: "960 — 1279" },
+    { name: "元",       range: "1271 — 1368" },
+    { name: "明",       range: "1368 — 1644" },
+    { name: "清",       range: "1636 — 1912" }
+  ];
+
+  // 朝代备注：先秦和元在本数据集中暂无条目，给一段说明
+  var DYNASTY_NOTES = {
+    "先秦": "本辑暂未收录先秦条目，可关注后续更新。",
+    "元":   "元代的冷知识将另辑补入，敬请期待。"
+  };
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // === 工具：阿拉伯数字 → 中文大写数字 ===
+  function chineseOrdinal(n) {
+    var digits = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖'];
+    if (n === 10) return '拾';
+    if (n < 10) return digits[n];
+    if (n < 20) return '拾' + digits[n - 10];
+    return digits[Math.floor(n / 10)] + '拾' + (n % 10 ? digits[n % 10] : '');
+  }
+
+  // === 构建 id → 序号映射，用于显示中文编号 ===
+  var idToIdx = {};
+  FACTS.forEach(function (f, i) { idToIdx[f.id] = i + 1; });
+
+  // 按朝代分组
+  var grouped = {};
+  FACTS.forEach(function (f) {
+    if (!grouped[f.dynasty]) grouped[f.dynasty] = [];
+    grouped[f.dynasty].push(f);
+  });
+
+  var html = DYNASTIES.map(function (dyn) {
+    var items = grouped[dyn.name] || [];
+    var itemsHtml;
+    if (items.length === 0) {
+      itemsHtml = '<div class="timeline-empty">' + esc(DYNASTY_NOTES[dyn.name] || "本朝代暂未收录条目。") + '</div>';
+    } else {
+      itemsHtml = '<div class="timeline-list">'
+        + items.map(function (f) {
+          var idx = idToIdx[f.id] || 0;
+          var ordinal = idx ? '第' + chineseOrdinal(idx) + '桩 · ' : '';
+          return ''
+            + '<div class="timeline-item">'
+            + '  <div class="timeline-item__bullet"></div>'
+            + '  <div class="timeline-item__body">'
+            + '    <h3 class="timeline-item__title">'
+            + '      <a href="fact.html?id=' + encodeURIComponent(f.id) + '">' + esc(ordinal) + esc(f.title) + '</a>'
+            + '    </h3>'
+            + '    <p class="timeline-item__summary">' + esc(f.summary) + '</p>'
+            + '    <span class="timeline-item__cat">' + esc(f.category) + '</span>'
+            + '  </div>'
+            + '</div>';
+        }).join("")
+        + '</div>';
+    }
+    return ''
+      + '<section class="timeline-dynasty">'
+      + '  <div class="timeline-dynasty__header">'
+      + '    <h2 class="timeline-dynasty__name">' + esc(dyn.name) + '</h2>'
+      + '    <span class="timeline-dynasty__count">' + esc(dyn.range) + ' · 共 ' + items.length + ' 条</span>'
+      + '  </div>'
+      + itemsHtml
+      + '</section>';
+  }).join("");
+
+  container.innerHTML = html;
+})();

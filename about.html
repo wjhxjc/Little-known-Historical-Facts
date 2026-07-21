@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="关于历史冷知识 — 一个用复古典籍风搭建的静态小站，收录 20 条打破常识的中国历史小考。">
+  <meta name="theme-color" content="#1a1410">
+  <title>关于 · 历史冷知识</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23a8332a'/%3E%3Ctext x='16' y='22' font-size='16' fill='%23e8dcc4' text-anchor='middle' font-family='serif' font-weight='700'%3E冷%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主内容</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__seal">冷</span>
+      <span>历史冷知识</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">首页</a>
+      <a href="timeline.html">时间线</a>
+      <a href="about.html" class="is-active">关于</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <h1 class="page-title">关于本辑</h1>
+  <div class="divider-ornament">拾 遗 考 辨</div>
+
+  <article class="about-content">
+
+    <h2>缘起</h2>
+    <p>历史冷知识是一辑以"打破常识"为旨归的小站。我们相信，许多被反复传诵的"历史真相"，其实只是小说演义、戏剧脸谱或教科书为了简化而留下的误差。本站从中挑选了二十桩被广泛误读的中国往事——从蔡伦改良造纸术，到诸葛亮空城计的虚构，再到包拯肤色不黑、雍正朱批段子手——逐一加以考辨，并标明史料出处，供读者趣读、复核。</p>
+
+    <div class="about-stats">
+      <div class="about-stat">
+        <div class="about-stat__num">20</div>
+        <div class="about-stat__label">条 冷 知 识</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat__num">6</div>
+        <div class="about-stat__label">个 分 类</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat__num">8</div>
+        <div class="about-stat__label">个 朝 代</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat__num">0</div>
+        <div class="about-stat__label">行 后 端 代 码</div>
+      </div>
+    </div>
+
+    <h2>六大分类</h2>
+    <ul>
+      <li><strong>帝王将相</strong> — 皇朝人物的真实面貌与戏剧化误读</li>
+      <li><strong>风俗生活</strong> — 古人衣食住行的细节考辨</li>
+      <li><strong>文人轶事</strong> — 诗文背后的真实人物与事件</li>
+      <li><strong>战争军事</strong> — 兵器、战役与军事史悬案</li>
+      <li><strong>文化典籍</strong> — 经典文本与文化遗产的冷知识</li>
+      <li><strong>美食风物</strong> — 饮食、器物与民俗的源流</li>
+    </ul>
+
+    <h2>史料说明</h2>
+    <p>每条冷知识正文末尾都附有"参考 · 史料出处"一栏，标明该条所依据的史籍、笔记或现代学术文献。常用来源包括二十四史各篇、《东京梦华录》《梦粱录》《容斋随笔》《癸辛杂识》等宋元笔记，以及齐藤谦《拙堂文话》、俞茂鲲《痘科金镜赋集解》等专门著述。</p>
+    <blockquote>
+      本站为科普趣读性质，史料引用力求准确，但难免挂一漏万。如需用于学术研究、论文写作或正式出版，请务必查阅原典与最新学术成果，不要以本站内容为唯一依据。若发现错漏，欢迎通过下方方式反馈。
+    </blockquote>
+
+    <h2>技术说明</h2>
+    <p>本站是一个零构建的静态网站：没有前端框架、没有打包工具、没有后端服务。所有数据存在 <code>js/facts.js</code> 一个文件里，四个 HTML 页面（首页 / 详情 / 时间线 / 关于）分别用对应的 JS 脚本读取并渲染。代码全部开源，可自由 fork 修改。</p>
+    <ul>
+      <li>字体：Noto Serif SC（思源宋体），系统宋体兜底</li>
+      <li>色板：墨棕底色 + 羊皮纸米黄正文 + 朱砂印章红强调</li>
+      <li>响应式：移动端优先，断点 375 / 768 / 1024 / 1440</li>
+      <li>部署：GitHub Pages 静态托管</li>
+    </ul>
+
+    <h2>反馈与联系</h2>
+    <p>发现史实错误、错别字或链接问题，欢迎通过以下方式反馈：</p>
+    <ul>
+      <li>在本站 <a href="https://github.com/new" target="_blank" rel="noopener">GitHub 仓库</a> 提 Issue</li>
+      <li>直接 <a href="https://github.com/new/fork" target="_blank" rel="noopener">fork</a> 后提交 Pull Request</li>
+      <li>或邮件联系站长：<a href="mailto:history@example.com?subject=历史冷知识反馈">history@example.com</a></li>
+    </ul>
+    <p style="text-align:center; margin-top:32px; color:var(--ink-soft); font-size:0.92rem; letter-spacing:0.1em;">— 史海无垠，拾遗未尽 —</p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div><span class="site-footer__seal">考据</span>史料出自正史与笔记，仅供趣读，不作学术依据。</div>
+    <div>© 历史冷知识 · <a href="about.html">关于本项目</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
