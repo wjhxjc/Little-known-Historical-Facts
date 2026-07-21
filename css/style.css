@@ -1083,3 +1083,125 @@ mark.search-highlight {
   padding: 0 2px;
   border-radius: 2px;
 }
+
+/* ===========================================================
+   翻页特效 — 3 项古籍风动效
+   1. 卡片 hover 3D 翻起（桌面 only）
+   2. 详情页卷轴展开
+   3. 页面切换淡入淡出（View Transitions API）
+   全部支持 prefers-reduced-motion
+   =========================================================== */
+
+/* === 1. 卡片 hover 3D 翻起 === */
+/* 仅在支持 hover 的设备（桌面）启用，移动端无 hover 不影响 */
+@media (hover: hover) and (pointer: fine) {
+  .fact-card {
+    /* transform-origin 沿左侧装订线，像翻书页一样从左边翻起 */
+    transform-origin: left center;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease, border-color 0.3s ease, outline-color 0.3s ease;
+  }
+  .fact-card:hover {
+    /* perspective 给父级，rotateY 轻微翻起 5deg + translateY 上浮 */
+    transform: perspective(1400px) rotateY(-5deg) translateY(-4px);
+    box-shadow: var(--shadow-hover), 0 8px 24px rgba(0,0,0,0.25);
+  }
+  /* active 态：按下时角度减小，给反馈 */
+  .fact-card:active {
+    transform: perspective(1400px) rotateY(-2deg) translateY(-1px);
+    transition-duration: 0.15s;
+  }
+  /* focus-visible 不能被 hover transform 覆盖 — 用 !important 保住焦点环 */
+  .fact-card:focus-visible {
+    transform: none !important;
+  }
+}
+
+/* === 2. 详情页卷轴展开 === */
+/* fact-detail 加载时从顶部 scaleY(0)→(1)，模拟卷轴从上往下展开 */
+@keyframes scroll-unfold {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+.fact-detail {
+  animation: scroll-unfold 0.5s ease-out;
+  transform-origin: top center;
+  /* 保留之前的 arch-top 拱顶 */
+}
+/* 详情页"返回列表"链接 + 相关推荐区域：延迟淡入，让卷轴先展开 */
+@keyframes fade-in-delayed {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.related {
+  animation: fade-in-delayed 0.4s ease-out 0.4s both;
+}
+.fact-detail__back {
+  animation: fade-in-delayed 0.3s ease-out 0.2s both;
+}
+
+/* === 3. 页面切换淡入淡出（View Transitions API） === */
+/* 现代浏览器（Chrome 111+）同源导航自动淡入淡出 */
+@view-transition {
+  navigation: auto;
+}
+
+/* 自定义 view transition 时长 — 300ms 符合微交互标准 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+}
+/* 旧页面向左淡出（像翻向下一页），新页面从右淡入 */
+::view-transition-old(root) {
+  animation-name: vt-fade-out-left;
+}
+::view-transition-new(root) {
+  animation-name: vt-fade-in-right;
+}
+@keyframes vt-fade-out-left {
+  to {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+}
+@keyframes vt-fade-in-right {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+}
+
+/* === 4. prefers-reduced-motion 降级 === */
+/* 全局：减弱动效偏好时，所有动画 ≤0.01ms */
+@media (prefers-reduced-motion: reduce) {
+  .fact-card,
+  .fact-card:hover,
+  .fact-card:active {
+    transform: none !important;
+    transition: none !important;
+  }
+  .fact-detail,
+  .related,
+  .fact-detail__back {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  /* View Transitions 也降级为瞬时切换 */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+  @view-transition {
+    navigation: auto;
+  }
+}
