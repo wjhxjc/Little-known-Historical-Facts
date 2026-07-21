@@ -118,15 +118,15 @@ a:hover { color: var(--cinnabar-light); text-decoration: underline; text-underli
   background: var(--parchment);
 }
 
-/* === Hero（首页） === */
+/* === Hero（首页） — 古籍化精简版 === */
 .hero {
   background-color: var(--ink-brown);
   background-image:
-    radial-gradient(circle at 30% 20%, rgba(168,51,42,0.12), transparent 55%),
-    radial-gradient(circle at 70% 80%, rgba(176,141,87,0.10), transparent 50%);
+    radial-gradient(circle at 30% 20%, rgba(168,51,42,0.10), transparent 55%),
+    radial-gradient(circle at 70% 80%, rgba(176,141,87,0.08), transparent 50%);
   color: var(--parchment);
   text-align: center;
-  padding: 80px 20px 70px;
+  padding: 56px 20px 48px;
   border-bottom: 1px solid var(--gold);
   position: relative;
   overflow: hidden;
@@ -142,89 +142,119 @@ a:hover { color: var(--cinnabar-light); text-decoration: underline; text-underli
   display: inline-block;
   background: var(--cinnabar);
   color: var(--parchment);
-  padding: 8px 18px;
-  font-size: 0.95rem;
+  padding: 6px 16px;
+  font-size: 0.88rem;
   letter-spacing: 0.4em;
   text-indent: 0.4em;
   border: 2px solid var(--cinnabar);
   transform: rotate(-2deg);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset, 0 4px 12px rgba(168,51,42,0.4);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .hero__title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 700;
   letter-spacing: 0.15em;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 .hero__subtitle {
-  font-size: clamp(1rem, 2.4vw, 1.25rem);
+  font-size: clamp(0.92rem, 2vw, 1.08rem);
   color: var(--parchment-dim);
   letter-spacing: 0.08em;
   max-width: 640px;
   margin: 0 auto;
-  line-height: 1.85;
+  line-height: 1.8;
 }
 .hero__rule {
-  margin: 32px auto 0;
-  width: 120px;
+  margin: 22px auto 0;
+  width: 100px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
+/* 古籍版心线 — hero 底部一条朱砂红细线，模仿古籍版心 */
+.hero__rule::after {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--cinnabar);
+  margin: 6px auto 0;
+}
 
-/* === 主内容容器 === */
+/* === 主内容容器 — 首页墨棕底+留白，其他页 parchment-dim === */
 main {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 48px 20px 64px;
   min-height: calc(100vh - 200px);
-  /* 羊皮纸暗色底 — 比卡片底略深，让卡片/parchment 元素能浮起来；
-     同时让 tab/标题等透明元素坐在浅色上，对比度达标 */
+  position: relative;
+  z-index: 2;
+}
+/* 首页（有 hero）：main 透明，透出 body 墨棕底，卡片作为独立"书页"浮起 */
+body:has(.hero) main {
+  margin-top: -20px;
+  background: transparent;
+}
+/* 非首页（详情/时间线/关于）：用 parchment-dim 浅底，让 page-title 等可读 */
+body:not(:has(.hero)) main {
   background-color: var(--parchment-dim);
   background-image:
     radial-gradient(circle at 20% 30%, rgba(176,141,87,0.05), transparent 40%),
     radial-gradient(circle at 80% 70%, rgba(168,51,42,0.04), transparent 50%);
-  position: relative;
-  z-index: 2;
 }
-
-/* 只有首页（有 hero 的页面）才让 main 像卷轴从 hero 下方"展开"：顶部圆角 + 上负 margin */
-body:has(.hero) main {
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-  margin-top: -24px;
-  box-shadow: 0 -1px 0 var(--gold);
+/* 首页 page-title/divider 坐在墨棕底上，改用 parchment 浅色 */
+body:has(.hero) .page-title,
+body:has(.hero) .page-subtitle {
+  color: var(--parchment);
 }
-.page-title {
-  text-align: center;
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  letter-spacing: 0.15em;
-  color: var(--ink-text);
-  margin: 0 0 8px;
-}
-.page-subtitle {
-  text-align: center;
-  color: var(--ink-soft);
-  letter-spacing: 0.08em;
-  margin: 0 0 40px;
-  font-size: 0.95rem;
-}
-.divider-ornament {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin: 12px auto 36px;
+body:has(.hero) .divider-ornament {
   color: var(--gold);
-  font-size: 0.85rem;
 }
-.divider-ornament::before,
-.divider-ornament::after {
-  content: "";
-  height: 1px;
-  width: 80px;
+body:has(.hero) .divider-ornament::before,
+body:has(.hero) .divider-ornament::after {
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+/* 首页 tab/搜索框需调整对比 */
+body:has(.hero) .tab-btn {
+  background: rgba(232,220,196,0.08);
+  border-color: var(--gold);
+  color: var(--parchment);
+}
+body:has(.hero) .tab-btn:hover {
+  background: rgba(176,141,87,0.18);
+  border-color: var(--cinnabar-light);
+  color: var(--parchment);
+}
+body:has(.hero) .tab-btn.is-active {
+  background: var(--cinnabar);
+  border-color: var(--cinnabar);
+  color: var(--parchment);
+}
+body:has(.hero) .tab-count {
+  color: var(--parchment-dim);
+}
+body:has(.hero) .tab-btn.is-active .tab-count {
+  color: var(--parchment);
+}
+body:has(.hero) .search-box__label {
+  background: rgba(232,220,196,0.06);
+  border-color: var(--gold);
+}
+body:has(.hero) .search-box__input {
+  color: var(--parchment);
+}
+body:has(.hero) .search-box__input::placeholder {
+  color: var(--parchment-dim);
+}
+body:has(.hero) .search-box__icon {
+  color: var(--parchment-dim);
+}
+body:has(.hero) .search-meta {
+  color: var(--parchment-dim);
+}
+body:has(.hero) .empty-state {
+  color: var(--parchment-dim);
 }
 
 /* === 分类筛选 tab === */
@@ -266,12 +296,19 @@ body:has(.hero) main {
 .tab-btn.is-active .tab-count {
   color: var(--parchment);
 }
+/* === 古籍书页卡 — 竖卡，左侧朱砂装订线，顶部版心线 === */
+.fact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
 .fact-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: var(--parchment);
   color: var(--ink-text);
   text-decoration: none;
-  padding: 22px 22px 20px;
+  padding: 0;
   border: 1px solid var(--gold);
   outline: 1px solid var(--gold);
   outline-offset: 3px;
@@ -279,16 +316,32 @@ body:has(.hero) main {
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, outline-color 0.3s ease;
   cursor: pointer;
   box-shadow: var(--shadow-card);
+  min-height: 260px;
+  overflow: hidden;
+  /* grid 子项 — 明确占一格 */
+  grid-column: span 1;
+  width: 100%;
 }
+/* 左侧朱砂装订线 — 模仿线装书的红色穿线装订，含针脚 */
 .fact-card::before {
   content: "";
   position: absolute;
-  top: 12px; right: 12px;
-  width: 8px; height: 8px;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
   background: var(--cinnabar);
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px var(--parchment), 0 0 0 4px var(--gold);
-  opacity: 0.7;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--cinnabar) 0 10px,
+    rgba(0,0,0,0.3) 10px 13px
+  );
+}
+/* 顶部版心 — 朱砂红横线 */
+.fact-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 5px; right: 0;
+  height: 3px;
+  background: var(--cinnabar);
 }
 .fact-card:hover {
   transform: translateY(-4px);
@@ -297,54 +350,88 @@ body:has(.hero) main {
   box-shadow: var(--shadow-hover);
   text-decoration: none;
 }
+.fact-card__body {
+  padding: 20px 18px 12px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.fact-card__ordinal {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  color: var(--cinnabar);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
 .fact-card__category {
   display: inline-block;
-  font-size: 0.875rem;
+  font-size: 0.76rem;
   letter-spacing: 0.15em;
   color: #8a2820;
   background: rgba(168,51,42,0.06);
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-left: 2px solid #8a2820;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-weight: 600;
+  align-self: flex-start;
 }
 .fact-card__title {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.08rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
   margin: 0 0 10px;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--ink-text);
 }
 .fact-card__summary {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   line-height: 1.75;
   color: var(--ink-soft);
   margin: 0 0 14px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .fact-card__meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--ink-soft);
   border-top: 1px dashed var(--gold);
   padding-top: 10px;
   margin-top: auto;
+  letter-spacing: 0.05em;
+  position: relative;
 }
-.fact-card__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+/* 鱼尾符号 — 古籍版心分隔符，居中在 meta 上方 */
+.fact-card__meta::before {
+  content: "◆";
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translateX(-50%);
+  color: var(--cinnabar);
+  background: var(--parchment);
+  padding: 0 6px;
+  font-size: 0.65rem;
+}
+.fact-card__tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .tag {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--ink-soft);
   background: rgba(176,141,87,0.12);
-  padding: 2px 8px;
+  padding: 1px 6px;
   border-radius: 2px;
   letter-spacing: 0.05em;
 }
 .fact-card__dynasty {
   color: var(--cinnabar);
   letter-spacing: 0.08em;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 /* === 详情页 === */
@@ -683,54 +770,64 @@ body:has(.hero) main {
 /* ===========================================================
    响应式 — 移动端 first，向上扩展
    断点：375 / 768 / 1024 / 1440
+   卡片：手机 2 列竖卡 / 平板 3 列 / 桌面 4 列
    =========================================================== */
 
 /* >= 375px：极小屏基础调整 */
 @media (min-width: 375px) {
   body { font-size: 16px; }
-  .hero { padding: 72px 24px 64px; }
+  .hero { padding: 48px 24px 40px; }
   .fact-detail { padding: 36px 28px; }
+  /* 手机 2 列竖卡 */
+  .fact-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
-/* >= 768px：平板 — 卡片 2 列 */
+/* >= 768px：平板 — 卡片 3 列 */
 @media (min-width: 768px) {
   body { font-size: 17px; }
   .site-header__inner { padding: 16px 24px; }
   .nav a { padding: 8px 16px; font-size: 1rem; }
-  .hero { padding: 96px 32px 88px; }
-  main { padding: 56px 32px 72px; }
-  .fact-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .hero { padding: 64px 32px 52px; }
+  main { padding: 48px 32px 64px; }
+  .fact-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .related__grid { grid-template-columns: repeat(2, 1fr); }
   .timeline-list { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: repeat(4, 1fr); }
   .fact-detail { padding: 44px 40px; }
   .fact-detail__content { font-size: 1.08rem; }
+  /* 平板卡片字号略增 */
+  .fact-card__title { font-size: 1.12rem; }
+  .fact-card__summary { font-size: 0.92rem; }
 }
 
-/* >= 1024px：桌面 — 卡片 3 列 */
+/* >= 1024px：桌面 — 卡片 4 列 */
 @media (min-width: 1024px) {
   body { font-size: 17px; }
   .site-header__inner { padding: 18px 32px; }
-  .hero { padding: 110px 40px 100px; }
-  main { padding: 64px 40px 80px; }
-  .fact-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .hero { padding: 72px 40px 60px; }
+  main { padding: 56px 40px 72px; }
+  .fact-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
   .related__grid { grid-template-columns: repeat(3, 1fr); }
   .timeline-list { grid-template-columns: repeat(2, 1fr); gap: 18px; }
   .fact-detail { padding: 52px 56px; }
   .filter-tabs { gap: 10px; }
   .tab-btn { padding: 11px 24px; font-size: 0.95rem; min-height: 44px; }
+  /* 桌面卡片字号 */
+  .fact-card__title { font-size: 1.1rem; }
+  .fact-card__summary { font-size: 0.9rem; }
 }
 
 /* >= 1440px：大屏 — 内容容器再宽一些 */
 @media (min-width: 1440px) {
-  :root { --max-w: 1280px; }
+  :root { --max-w: 1320px; }
   body { font-size: 18px; }
   .site-header__inner { padding: 18px 40px; }
-  .hero { padding: 120px 48px 110px; }
-  main { padding: 72px 48px 88px; }
-  .fact-grid { gap: 32px; }
+  .hero { padding: 80px 48px 68px; }
+  main { padding: 64px 48px 80px; }
+  .fact-grid { gap: 28px; }
   .fact-detail { padding: 60px 64px; }
   .fact-detail__content { font-size: 1.1rem; line-height: 2.05; }
+  .fact-card__title { font-size: 1.15rem; }
 }
 
 /* === 打印样式 === */

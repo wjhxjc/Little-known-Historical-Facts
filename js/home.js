@@ -132,16 +132,20 @@
       var tagsHtml = (f.tags || []).slice(0, 3).map(function (t) {
         return '<span class="tag">' + highlight(t, currentQuery.trim()) + '</span>';
       }).join("");
+      // 计算 fact 在全集中的序号（1-based），用于中文编号
       var factIdx = FACTS.findIndex(function (x) { return x.id === f.id; }) + 1;
-      var ordinal = factIdx ? '第' + chineseOrdinal(factIdx) + '桩 · ' : '';
+      var ordinal = factIdx ? '第' + chineseOrdinal(factIdx) + '桩' : '';
       return ''
         + '<a class="fact-card" href="fact.html?id=' + encodeURIComponent(f.id) + '">'
-        + '  <span class="fact-card__category">' + esc(f.category) + '</span>'
-        + '  <h3 class="fact-card__title">' + esc(ordinal) + highlight(f.title, currentQuery.trim()) + '</h3>'
-        + '  <p class="fact-card__summary">' + highlight(f.summary, currentQuery.trim()) + '</p>'
-        + '  <div class="fact-card__meta">'
-        + '    <div class="fact-card__tags">' + tagsHtml + '</div>'
-        + '    <span class="fact-card__dynasty">' + highlight(f.dynasty, currentQuery.trim()) + '</span>'
+        + '  <div class="fact-card__body">'
+        + '    <div class="fact-card__ordinal">' + esc(ordinal) + '</div>'
+        + '    <span class="fact-card__category">' + esc(f.category) + '</span>'
+        + '    <h3 class="fact-card__title">' + highlight(f.title, currentQuery.trim()) + '</h3>'
+        + '    <p class="fact-card__summary">' + highlight(f.summary, currentQuery.trim()) + '</p>'
+        + '    <div class="fact-card__meta">'
+        + '      <div class="fact-card__tags">' + tagsHtml + '</div>'
+        + '      <span class="fact-card__dynasty">' + highlight(f.dynasty, currentQuery.trim()) + '</span>'
+        + '    </div>'
         + '  </div>'
         + '</a>';
     }).join("");
