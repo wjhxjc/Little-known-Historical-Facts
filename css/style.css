@@ -344,7 +344,7 @@ body:has(.hero) .empty-state {
   background: var(--cinnabar);
 }
 .fact-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--cinnabar);
   outline-color: var(--cinnabar);
   box-shadow: var(--shadow-hover);
@@ -1098,17 +1098,17 @@ mark.search-highlight {
   .fact-card {
     /* transform-origin 沿左侧装订线，像翻书页一样从左边翻起 */
     transform-origin: left center;
-    transition: transform 0.3s ease-out, box-shadow 0.3s ease, border-color 0.3s ease, outline-color 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease, outline-color 0.4s ease;
   }
   .fact-card:hover {
     /* perspective 给父级，rotateY 轻微翻起 5deg + translateY 上浮 */
-    transform: perspective(1400px) rotateY(-5deg) translateY(-4px);
-    box-shadow: var(--shadow-hover), 0 8px 24px rgba(0,0,0,0.25);
+    transform: perspective(2000px) rotateY(-2deg) translateY(-2px);
+    box-shadow: var(--shadow-hover);
   }
   /* active 态：按下时角度减小，给反馈 */
   .fact-card:active {
-    transform: perspective(1400px) rotateY(-2deg) translateY(-1px);
-    transition-duration: 0.15s;
+    transform: perspective(2000px) rotateY(-1deg) translateY(-1px);
+    transition-duration: 0.25s;
   }
   /* focus-visible 不能被 hover transform 覆盖 — 用 !important 保住焦点环 */
   .fact-card:focus-visible {
@@ -1132,7 +1132,7 @@ mark.search-highlight {
   }
 }
 .fact-detail {
-  animation: scroll-unfold 0.5s ease-out;
+  animation: scroll-unfold 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: top center;
   /* 保留之前的 arch-top 拱顶 */
 }
@@ -1142,10 +1142,10 @@ mark.search-highlight {
   to { opacity: 1; transform: translateY(0); }
 }
 .related {
-  animation: fade-in-delayed 0.4s ease-out 0.4s both;
+  animation: fade-in-delayed 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
 }
 .fact-detail__back {
-  animation: fade-in-delayed 0.3s ease-out 0.2s both;
+  animation: fade-in-delayed 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
 /* === 3. 页面切换淡入淡出（View Transitions API） === */
@@ -1157,8 +1157,8 @@ mark.search-highlight {
 /* 自定义 view transition 时长 — 300ms 符合微交互标准 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.3s;
-  animation-timing-function: ease-in-out;
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* 旧页面向左淡出（像翻向下一页），新页面从右淡入 */
 ::view-transition-old(root) {
@@ -1169,13 +1169,13 @@ mark.search-highlight {
 }
 @keyframes vt-fade-out-left {
   to {
-    transform: translateX(-30px);
+    transform: translateX(-12px);
     opacity: 0;
   }
 }
 @keyframes vt-fade-in-right {
   from {
-    transform: translateX(30px);
+    transform: translateX(12px);
     opacity: 0;
   }
 }
