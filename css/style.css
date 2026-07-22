@@ -296,87 +296,108 @@ body:has(.hero) .empty-state {
 .tab-btn.is-active .tab-count {
   color: var(--parchment);
 }
-/* === 古籍书页卡 — 竖卡，左侧朱砂装订线，顶部版心线 === */
+/* === 古籍书页卡 — 仿真羊皮纸 + 真装订线 + 折角 === */
 .fact-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 18px;
 }
 .fact-card {
   display: flex;
   flex-direction: column;
-  background: var(--parchment);
+  /* 仿真羊皮纸：基色 + 多层渐变模拟纤维 + 噪点 */
+  background-color: var(--parchment);
+  background-image:
+    /* 纸张纤维 — 细密斜纹 */
+    repeating-linear-gradient(135deg, rgba(176,141,87,0.03) 0 1px, transparent 1px 3px),
+    /* 暗斑 — 模拟陈年纸张的茶渍 */
+    radial-gradient(ellipse at 20% 80%, rgba(120,80,40,0.06), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(168,51,42,0.04), transparent 45%),
+    /* 整体微微的明暗变化 — 不均匀的纸张厚度 */
+    linear-gradient(145deg, rgba(255,250,235,0.4), transparent 60%);
   color: var(--ink-text);
   text-decoration: none;
   padding: 0;
-  border: 1px solid var(--gold);
-  outline: 1px solid var(--gold);
-  outline-offset: 3px;
+  /* 边框：用更柔和的不规则感 — 双层细线 */
+  border: 1px solid rgba(138, 109, 59, 0.5);
+  outline: 1px solid rgba(138, 109, 59, 0.3);
+  outline-offset: 4px;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, outline-color 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease, outline-color 0.4s ease;
   cursor: pointer;
-  box-shadow: var(--shadow-card);
+  /* 阴影：偏移 + 模糊 + 扩散，模拟纸张放在桌面上的真实投影 */
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.08),
+    0 4px 12px rgba(0,0,0,0.15),
+    inset 0 0 30px rgba(176,141,87,0.08);
   min-height: 260px;
-  /* 去掉 overflow: hidden — 否则 rotateY 3D 翘起会被自身裁掉 */
-  /* grid 子项 — 明确占一格 */
   grid-column: span 1;
   width: 100%;
+  overflow: hidden;
 }
-/* 左侧朱砂装订线 — 模仿线装书的红色穿线装订，含针脚 */
+/* 左侧装订线 — 用真实的线迹感：4 个穿孔 + 红线穿过 */
 .fact-card::before {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 5px;
-  background: var(--cinnabar);
-  background-image: repeating-linear-gradient(
-    0deg,
-    var(--cinnabar) 0 10px,
-    rgba(0,0,0,0.3) 10px 13px
-  );
+  width: 6px;
+  /* 装订线：朱砂红底 + 4 个透孔（用 radial-gradient 模拟穿线孔） */
+  background:
+    radial-gradient(circle at 3px 18%, var(--parchment) 1.5px, transparent 2px),
+    radial-gradient(circle at 3px 38%, var(--parchment) 1.5px, transparent 2px),
+    radial-gradient(circle at 3px 58%, var(--parchment) 1.5px, transparent 2px),
+    radial-gradient(circle at 3px 78%, var(--parchment) 1.5px, transparent 2px),
+    var(--cinnabar);
+  box-shadow: 2px 0 0 rgba(168,51,42,0.3);
+  z-index: 2;
 }
-/* 顶部版心线 + 左侧装订线合并到 ::before（::after 让给右下角折角） */
-.fact-card::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 5px;
-  background: var(--cinnabar);
-  background-image: repeating-linear-gradient(
-    0deg,
-    var(--cinnabar) 0 10px,
-    rgba(0,0,0,0.3) 10px 13px
-  );
-  /* 顶部版心线 — 用 box-shadow 上方 3px 朱砂红 */
-  box-shadow: 3px 0 0 var(--cinnabar);
-}
-/* 右下角折角 — 默认小折角，hover 时变大 */
+/* 右下角折角 — 用渐变模拟纸张卷起的真实层次 */
 .fact-card::after {
   content: "";
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 0 14px 14px;
-  border-color: transparent transparent var(--parchment-dim) transparent;
-  box-shadow: -2px -2px 4px rgba(0,0,0,0.12);
+  width: 22px;
+  height: 22px;
+  /* 折角：三角形 + 渐变（背面颜色 + 阴影） */
+  background: linear-gradient(135deg, transparent 50%, var(--parchment-dim) 50%, var(--parchment-dim) 58%, rgba(120,80,40,0.25) 100%);
+  /* 折角投影 */
+  box-shadow: -2px -2px 5px rgba(0,0,0,0.12);
   z-index: 3;
-  transition: border-width 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), height 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
 .fact-card:hover {
   transform: translateY(-3px);
   border-color: var(--cinnabar);
   outline-color: var(--cinnabar);
-  box-shadow: var(--shadow-hover);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.1),
+    0 8px 20px rgba(168,51,42,0.15),
+    0 12px 28px rgba(0,0,0,0.18),
+    inset 0 0 30px rgba(176,141,87,0.1);
   text-decoration: none;
 }
+/* hover 时右下角折角变大 */
+.fact-card:hover::after {
+  width: 36px;
+  height: 36px;
+  box-shadow: -3px -3px 8px rgba(0,0,0,0.18);
+}
+.fact-card:active::after {
+  width: 28px;
+  height: 28px;
+  transition-duration: 0.2s;
+}
+.fact-card:focus-visible {
+  transform: none !important;
+}
 .fact-card__body {
-  padding: 20px 18px 12px 22px;
+  padding: 22px 20px 14px 24px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 .fact-card__ordinal {
   font-size: 0.78rem;
@@ -422,13 +443,13 @@ body:has(.hero) .empty-state {
   align-items: center;
   font-size: 0.8rem;
   color: var(--ink-soft);
-  border-top: 1px dashed var(--gold);
+  border-top: 1px dashed rgba(138, 109, 59, 0.5);
   padding-top: 10px;
   margin-top: auto;
   letter-spacing: 0.05em;
   position: relative;
 }
-/* 鱼尾符号 — 古籍版心分隔符，居中在 meta 上方 */
+/* 鱼尾符号 — 古籍版心分隔符 */
 .fact-card__meta::before {
   content: "◆";
   position: absolute;
