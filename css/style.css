@@ -335,13 +335,35 @@ body:has(.hero) .empty-state {
     rgba(0,0,0,0.3) 10px 13px
   );
 }
-/* 顶部版心 — 朱砂红横线 */
+/* 顶部版心线 + 左侧装订线合并到 ::before（::after 让给右下角折角） */
+.fact-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--cinnabar);
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--cinnabar) 0 10px,
+    rgba(0,0,0,0.3) 10px 13px
+  );
+  /* 顶部版心线 — 用 box-shadow 上方 3px 朱砂红 */
+  box-shadow: 3px 0 0 var(--cinnabar);
+}
+/* 右下角折角 — 默认小折角，hover 时变大 */
 .fact-card::after {
   content: "";
   position: absolute;
-  top: 0; left: 5px; right: 0;
-  height: 3px;
-  background: var(--cinnabar);
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 14px 14px;
+  border-color: transparent transparent var(--parchment-dim) transparent;
+  box-shadow: -2px -2px 4px rgba(0,0,0,0.12);
+  z-index: 3;
+  transition: border-width 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
 .fact-card:hover {
   transform: translateY(-3px);
@@ -1095,28 +1117,22 @@ mark.search-highlight {
 /* === 1. 卡片 hover 3D 翻起 === */
 /* 仅在支持 hover 的设备（桌面）启用，移动端无 hover 不影响 */
 @media (hover: hover) and (pointer: fine) {
-  /* 父容器加 perspective，让子卡片 3D 翘起有真实透视感 */
-  .fact-grid {
-    perspective: 1600px;
-  }
   .fact-card {
-    /* transform-origin 沿左侧装订线，像翻书页一样从左边翻起 */
-    transform-origin: left center;
     transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease, outline-color 0.4s ease;
-    /* 卡片自身保持 3D 空间，不被父级压平 */
-    transform-style: preserve-3d;
   }
   .fact-card:hover {
-    /* perspective 已在父容器，这里只需 rotateY + translateY */
-    transform: rotateY(-4deg) translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
   }
-  /* active 态：按下时角度减小，给反馈 */
-  .fact-card:active {
-    transform: rotateY(-2deg) translateY(-1px);
-    transition-duration: 0.25s;
+  .fact-card:hover::after {
+    /* hover 时右下角折角变大，像手指捻起的书页一角 */
+    border-width: 0 0 34px 34px;
+    box-shadow: -3px -3px 7px rgba(0,0,0,0.2);
   }
-  /* focus-visible 不能被 hover transform 覆盖 — 用 !important 保住焦点环 */
+  .fact-card:active::after {
+    border-width: 0 0 26px 26px;
+    transition-duration: 0.2s;
+  }
   .fact-card:focus-visible {
     transform: none !important;
   }
