@@ -309,11 +309,11 @@ body:has(.hero) .empty-state {
   background-color: #ebdec0;
   background-image:
     /* 1. SVG 噪点滤镜 — 真实纸纹（turbulence 湍流）*/
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.4  0 0 0 0 0.3  0 0 0 0 0.15  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.4  0 0 0 0 0.3  0 0 0 0 0.15  0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
     /* 2. 茶渍暗斑 — 左下角明显的茶渍 */
-    radial-gradient(ellipse 60% 50% at 15% 85%, rgba(110,70,30,0.22), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 15% 85%, rgba(110,70,30,0.30), transparent 60%),
     /* 3. 右上角朱砂晕染 */
-    radial-gradient(ellipse 50% 40% at 85% 15%, rgba(168,51,42,0.12), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 15%, rgba(168,51,42,0.18), transparent 55%),
     /* 4. 整体明暗渐变 — 左上亮、右下暗，模拟纸张光照 */
     linear-gradient(135deg, #f2e5c8 0%, #e8dab8 50%, #d8c8a0 100%);
   background-blend-mode: multiply, normal, normal, normal;
@@ -336,8 +336,6 @@ body:has(.hero) .empty-state {
   grid-column: span 1;
   width: 100%;
   overflow: hidden;
-  /* 3D 透视空间 — 给翻角提供 perspective */
-  perspective: 600px;
 }
 /* 左侧装订线 — 4 个真实穿孔 + 朱砂红线穿过 */
 .fact-card::before {
@@ -347,61 +345,26 @@ body:has(.hero) .empty-state {
   width: 7px;
   /* 朱砂红底色 + 4 个透孔（parchment 色圆点穿透红线）*/
   background:
-    radial-gradient(circle at 3.5px 15%, #ebdec0 2.5px, transparent 3px),
-    radial-gradient(circle at 3.5px 38%, #ebdec0 2.5px, transparent 3px),
-    radial-gradient(circle at 3.5px 61%, #ebdec0 2.5px, transparent 3px),
-    radial-gradient(circle at 3.5px 85%, #ebdec0 2.5px, transparent 3px),
+    radial-gradient(circle at 3.5px 15%, #ebdec0 3px, transparent 3.5px),
+    radial-gradient(circle at 3.5px 38%, #ebdec0 3px, transparent 3.5px),
+    radial-gradient(circle at 3.5px 61%, #ebdec0 3px, transparent 3.5px),
+    radial-gradient(circle at 3.5px 85%, #ebdec0 3px, transparent 3.5px),
     #a8332a;
   /* 装订线右侧阴影 — 线穿过纸张的投影 */
   box-shadow: 3px 0 4px rgba(168,51,42,0.25);
   z-index: 2;
 }
-/* ::after 改为折角下方的暗影层 — 翻角翻起时露出的阴影 */
+/* 顶部版心线 — 朱砂红横线（::after 回归版心装饰）*/
 .fact-card::after {
   content: "";
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 50px;
-  height: 50px;
-  /* 翻角阴影：径向渐变，从右下角向外扩散的暗影 */
-  background: radial-gradient(circle at 100% 100%,
-    rgba(60,40,15,0.3) 0%,
-    rgba(60,40,15,0.15) 30%,
-    transparent 60%);
+  top: 0; left: 7px; right: 0;
+  height: 3px;
+  background: var(--cinnabar);
   z-index: 2;
-  opacity: 0.5;
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), width 0.5s cubic-bezier(0.22, 1, 0.36, 1), height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* 真正的 3D 翻角元素 — 独立 div，在 3D 空间翻起 */
-.fact-card__fold {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 36px;
-  height: 36px;
-  z-index: 4;
-  /* 切出右下角三角形 — 沿对角线 */
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  /* 翻角正面：纸张背面色 + 折痕渐变 */
-  background:
-    linear-gradient(135deg,
-      var(--parchment-dim) 0%,
-      #d4c4a0 40%,
-      #c8b890 70%,
-      rgba(100,60,20,0.2) 100%);
-  /* 旋转轴：沿左上角到右下角的对角线翻起 */
-  transform-origin: 0 0;
-  transform: rotate3d(1, 1, 0, 0deg);
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  /* 翻角投影 */
-  box-shadow: -2px -2px 4px rgba(0,0,0,0.12);
-  /* 保持 3D 空间 */
-  transform-style: preserve-3d;
-  backface-visibility: visible;
 }
 .fact-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--cinnabar);
   outline-color: var(--cinnabar);
   box-shadow:
@@ -410,20 +373,6 @@ body:has(.hero) .empty-state {
     0 16px 36px rgba(0,0,0,0.25),
     inset 0 0 40px rgba(140,100,50,0.15);
   text-decoration: none;
-}
-/* hover 时翻角沿对角线 3D 翻起 — 露出背面 */
-.fact-card:hover .fact-card__fold {
-  transform: rotate3d(1, 1, 0, -145deg);
-}
-/* hover 时底部阴影加深 — 翻起后露出更多暗影 */
-.fact-card:hover::after {
-  opacity: 1;
-  width: 60px;
-  height: 60px;
-}
-.fact-card:active .fact-card__fold {
-  transform: rotate3d(1, 1, 0, -80deg);
-  transition-duration: 0.2s;
 }
 .fact-card:focus-visible {
   transform: none !important;

@@ -137,7 +137,6 @@
       var ordinal = factIdx ? '第' + chineseOrdinal(factIdx) + '桩' : '';
       return ''
         + '<a class="fact-card" href="fact.html?id=' + encodeURIComponent(f.id) + '">'
-        + '  <div class="fact-card__fold"></div>'
         + '  <div class="fact-card__body">'
         + '    <div class="fact-card__ordinal">' + esc(ordinal) + '</div>'
         + '    <span class="fact-card__category">' + esc(f.category) + '</span>'
