@@ -344,7 +344,7 @@ body:has(.hero) .empty-state {
   background: var(--cinnabar);
 }
 .fact-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--cinnabar);
   outline-color: var(--cinnabar);
   box-shadow: var(--shadow-hover);
@@ -1102,12 +1102,12 @@ mark.search-highlight {
   }
   .fact-card:hover {
     /* perspective 给父级，rotateY 轻微翻起 5deg + translateY 上浮 */
-    transform: perspective(2000px) rotateY(-2deg) translateY(-2px);
+    transform: perspective(1600px) rotateY(-4deg) translateY(-3px);
     box-shadow: var(--shadow-hover);
   }
   /* active 态：按下时角度减小，给反馈 */
   .fact-card:active {
-    transform: perspective(2000px) rotateY(-1deg) translateY(-1px);
+    transform: perspective(1600px) rotateY(-2deg) translateY(-1px);
     transition-duration: 0.25s;
   }
   /* focus-visible 不能被 hover transform 覆盖 — 用 !important 保住焦点环 */
