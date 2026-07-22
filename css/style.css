@@ -317,7 +317,7 @@ body:has(.hero) .empty-state {
   cursor: pointer;
   box-shadow: var(--shadow-card);
   min-height: 260px;
-  overflow: hidden;
+  /* 去掉 overflow: hidden — 否则 rotateY 3D 翘起会被自身裁掉 */
   /* grid 子项 — 明确占一格 */
   grid-column: span 1;
   width: 100%;
@@ -1095,19 +1095,25 @@ mark.search-highlight {
 /* === 1. 卡片 hover 3D 翻起 === */
 /* 仅在支持 hover 的设备（桌面）启用，移动端无 hover 不影响 */
 @media (hover: hover) and (pointer: fine) {
+  /* 父容器加 perspective，让子卡片 3D 翘起有真实透视感 */
+  .fact-grid {
+    perspective: 1600px;
+  }
   .fact-card {
     /* transform-origin 沿左侧装订线，像翻书页一样从左边翻起 */
     transform-origin: left center;
     transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease, outline-color 0.4s ease;
+    /* 卡片自身保持 3D 空间，不被父级压平 */
+    transform-style: preserve-3d;
   }
   .fact-card:hover {
-    /* perspective 给父级，rotateY 轻微翻起 5deg + translateY 上浮 */
-    transform: perspective(1600px) rotateY(-4deg) translateY(-3px);
+    /* perspective 已在父容器，这里只需 rotateY + translateY */
+    transform: rotateY(-4deg) translateY(-3px);
     box-shadow: var(--shadow-hover);
   }
   /* active 态：按下时角度减小，给反馈 */
   .fact-card:active {
-    transform: perspective(1600px) rotateY(-2deg) translateY(-1px);
+    transform: rotateY(-2deg) translateY(-1px);
     transition-duration: 0.25s;
   }
   /* focus-visible 不能被 hover transform 覆盖 — 用 !important 保住焦点环 */
