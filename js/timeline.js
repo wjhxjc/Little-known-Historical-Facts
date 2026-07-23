@@ -80,14 +80,17 @@
         }).join("")
         + '</div>';
     }
-    // 朝代标签 — 可点击展开/折叠
+    // 朝代标签 — 竹简片 + 信息条
     return ''
       + '<section class="timeline-dynasty' + (items.length === 0 ? ' is-empty' : '') + '">'
       + '  <button class="timeline-dynasty__header" type="button" '
       + '    aria-expanded="false" aria-controls="dyn-' + esc(dyn.name) + '">'
-      + '    <h2 class="timeline-dynasty__name">' + esc(dyn.name) + '</h2>'
-      + '    <span class="timeline-dynasty__count">' + esc(dyn.range) + ' · 共 ' + items.length + ' 条</span>'
-      + '    <span class="timeline-dynasty__toggle" aria-hidden="true">展开</span>'
+      + '    <div class="timeline-dynasty__slip" aria-hidden="true"></div>'
+      + '    <div class="timeline-dynasty__info">'
+      + '      <h2 class="timeline-dynasty__name">' + esc(dyn.name) + '</h2>'
+      + '      <span class="timeline-dynasty__count">' + esc(dyn.range) + ' · 共 ' + items.length + ' 条</span>'
+      + '      <span class="timeline-dynasty__toggle" aria-hidden="true">展开</span>'
+      + '    </div>'
       + '  </button>'
       + '  <div class="timeline-dynasty__content" id="dyn-' + esc(dyn.name) + '" role="region">'
       + '    <div class="timeline-dynasty__inner">'
