@@ -67,7 +67,7 @@
           var idx = idToIdx[f.id] || 0;
           var ordinal = idx ? '第' + chineseOrdinal(idx) + '桩' : '';
           return ''
-            + '<div class="timeline-item">'
+            + '<div class="timeline-item" data-cat="' + esc(f.category) + '">'
             + '  <div class="timeline-item__body">'
             + '    <div class="timeline-item__ordinal">' + esc(ordinal) + '</div>'
             + '    <h3 class="timeline-item__title">'

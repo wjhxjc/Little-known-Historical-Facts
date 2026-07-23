@@ -136,7 +136,7 @@
       var factIdx = FACTS.findIndex(function (x) { return x.id === f.id; }) + 1;
       var ordinal = factIdx ? '第' + chineseOrdinal(factIdx) + '桩' : '';
       return ''
-        + '<a class="fact-card" href="fact.html?id=' + encodeURIComponent(f.id) + '">'
+        + '<a class="fact-card" data-cat="' + esc(f.category) + '" href="fact.html?id=' + encodeURIComponent(f.id) + '">'
         + '  <div class="fact-card__body">'
         + '    <div class="fact-card__ordinal">' + esc(ordinal) + '</div>'
         + '    <span class="fact-card__category">' + esc(f.category) + '</span>'
