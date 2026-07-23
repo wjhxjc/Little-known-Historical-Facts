@@ -13,23 +13,22 @@
   var FACTS = window.FACTS;
   var container = document.getElementById("timelineContainer");
 
-  // 8 朝代固定顺序
+  // 10 朝代固定顺序
   var DYNASTIES = [
-    { name: "先秦",     range: "前 2070 — 前 221" },
-    { name: "秦汉",     range: "前 221 — 220" },
+    { name: "先秦",       range: "前 2070 — 前 221" },
+    { name: "秦",         range: "前 221 — 前 206" },
+    { name: "汉",         range: "前 202 — 220" },
     { name: "魏晋南北朝", range: "220 — 589" },
-    { name: "隋唐",     range: "581 — 907" },
-    { name: "宋",       range: "960 — 1279" },
-    { name: "元",       range: "1271 — 1368" },
-    { name: "明",       range: "1368 — 1644" },
-    { name: "清",       range: "1636 — 1912" }
+    { name: "隋唐",       range: "581 — 907" },
+    { name: "五代十国",   range: "907 — 979" },
+    { name: "宋",         range: "960 — 1279" },
+    { name: "元",         range: "1271 — 1368" },
+    { name: "明",         range: "1368 — 1644" },
+    { name: "清",         range: "1636 — 1912" }
   ];
 
-  // 朝代备注：先秦和元在本数据集中暂无条目，给一段说明
-  var DYNASTY_NOTES = {
-    "先秦": "本辑暂未收录先秦条目，可关注后续更新。",
-    "元":   "元代的冷知识将另辑补入，敬请期待。"
-  };
+  // 朝代备注：空缺朝代给说明
+  var DYNASTY_NOTES = {};
 
   function esc(s) {
     return String(s == null ? "" : s)
