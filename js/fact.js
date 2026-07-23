@@ -95,6 +95,7 @@
     + '  <div class="fact-detail__source">'
     + '    <h2>参考 · 史料出处</h2>'
     + '    <p>' + esc(fact.source) + '</p>'
+    + '    <p class="fact-detail__disclaimer">本条内容为科普趣读，引用前请查阅原典核实，详见<a href="about.html#main">关于页免责声明</a>。</p>'
     + '  </div>'
     + '</article>';
 

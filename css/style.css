@@ -1223,3 +1223,19 @@ mark.search-highlight {
     navigation: auto;
   }
 }
+
+/* 详情页免责声明小字 */
+.fact-detail__disclaimer {
+  margin-top: 10px !important;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(138, 109, 59, 0.3);
+  font-size: 0.8rem !important;
+  color: var(--ink-soft) !important;
+  font-style: italic;
+  line-height: 1.6 !important;
+}
+.fact-detail__disclaimer a {
+  color: var(--cinnabar);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
