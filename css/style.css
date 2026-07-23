@@ -435,18 +435,7 @@ body:has(.hero) .empty-state {
   letter-spacing: 0.05em;
   position: relative;
 }
-/* 鱼尾符号 — 古籍版心分隔符 */
-.fact-card__meta::before {
-  content: "◆";
-  position: absolute;
-  left: 50%;
-  top: -10px;
-  transform: translateX(-50%);
-  color: var(--cinnabar);
-  background: #ebdec0;
-  padding: 0 6px;
-  font-size: 0.65rem;
-}
+/* 鱼尾符号已移除（用户反馈不好看）*/
 .fact-card__tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .tag {
   font-size: 0.72rem;
