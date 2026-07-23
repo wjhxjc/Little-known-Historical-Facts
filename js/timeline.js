@@ -59,7 +59,7 @@
     grouped[f.dynasty].push(f);
   });
 
-  var html = DYNASTIES.map(function (dyn) {
+  var html = '<div class="timeline-container">' + DYNASTIES.map(function (dyn) {
     var items = grouped[dyn.name] || [];
     var itemsHtml;
     if (items.length === 0) {
@@ -68,13 +68,13 @@
       itemsHtml = '<div class="timeline-list">'
         + items.map(function (f) {
           var idx = idToIdx[f.id] || 0;
-          var ordinal = idx ? '第' + chineseOrdinal(idx) + '桩 · ' : '';
+          var ordinal = idx ? '第' + chineseOrdinal(idx) + '桩' : '';
           return ''
             + '<div class="timeline-item">'
-            + '  <div class="timeline-item__bullet"></div>'
             + '  <div class="timeline-item__body">'
+            + '    <div class="timeline-item__ordinal">' + esc(ordinal) + '</div>'
             + '    <h3 class="timeline-item__title">'
-            + '      <a href="fact.html?id=' + encodeURIComponent(f.id) + '">' + esc(ordinal) + esc(f.title) + '</a>'
+            + '      <a href="fact.html?id=' + encodeURIComponent(f.id) + '">' + esc(f.title) + '</a>'
             + '    </h3>'
             + '    <p class="timeline-item__summary">' + esc(f.summary) + '</p>'
             + '    <span class="timeline-item__cat">' + esc(f.category) + '</span>'
@@ -91,7 +91,7 @@
       + '  </div>'
       + itemsHtml
       + '</section>';
-  }).join("");
+  }).join("") + '</div>';
 
   container.innerHTML = html;
 })();
