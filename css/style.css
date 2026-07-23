@@ -557,65 +557,95 @@ body:has(.hero) .empty-state {
   letter-spacing: 0.08em;
 }
 
-/* === 时间线 — 古籍卷轴式竖向时间线 === */
-/* 整体容器：左侧竖向朱砂轴线贯穿所有朝代 */
+/* === 时间线 — 折叠式竹简展开 === */
 .timeline-container {
   position: relative;
-  padding-left: 32px;
+  padding-left: 0;
+  max-width: 900px;
+  margin: 0 auto;
 }
-/* 竖向轴线 — 贯穿整个时间线 */
-.timeline-container::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    var(--cinnabar) 5%,
-    var(--cinnabar) 95%,
-    transparent 100%);
-  opacity: 0.5;
-}
+
 /* 朝代分组 */
 .timeline-dynasty {
-  margin-bottom: 40px;
+  margin-bottom: 16px;
   position: relative;
 }
-/* 朝代头部 — 左侧朱砂圆点连接轴线 */
+
+/* 朝代标签 — 可点击的按钮 */
 .timeline-dynasty__header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  margin-left: -32px;
-  padding-left: 0;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 24px 18px 32px;
+  background: linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dim) 100%);
+  border: 1px solid var(--gold);
+  outline: 1px solid rgba(138, 109, 59, 0.3);
+  outline-offset: 3px;
+  cursor: pointer;
   position: relative;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  font-family: var(--font-serif);
+  text-align: left;
+  /* 竹简感：左侧朱砂装订线 */
+  border-left: 5px solid var(--cinnabar);
 }
-/* 朝代节点 — 轴线上的大圆点 */
+/* 装订线针脚 */
 .timeline-dynasty__header::before {
   content: "";
   position: absolute;
-  left: 1px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
   background: var(--cinnabar);
-  border-radius: 50%;
-  border: 3px solid var(--parchment);
-  box-shadow: 0 0 0 2px var(--cinnabar);
-  z-index: 2;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--cinnabar) 0 12px,
+    rgba(0,0,0,0.3) 12px 15px
+  );
 }
+.timeline-dynasty__header:hover {
+  border-color: var(--cinnabar);
+  box-shadow: 0 4px 14px rgba(168,51,42,0.15);
+}
+.timeline-dynasty__header:focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px var(--parchment), 0 0 0 5px var(--cinnabar);
+}
+/* 展开状态 — 标签变色 */
+.timeline-dynasty.is-expanded .timeline-dynasty__header {
+  background: linear-gradient(135deg, var(--cinnabar) 0%, #8a2820 100%);
+  border-color: var(--cinnabar);
+  color: var(--parchment);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.timeline-dynasty.is-expanded .timeline-dynasty__header::before {
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--parchment) 0 12px,
+    rgba(0,0,0,0.2) 12px 15px
+  );
+}
+.timeline-dynasty.is-expanded .timeline-dynasty__name {
+  color: var(--parchment);
+}
+.timeline-dynasty.is-expanded .timeline-dynasty__count {
+  color: rgba(232,220,196,0.85);
+  background: rgba(232,220,196,0.15);
+}
+
+/* 朝代名 */
 .timeline-dynasty__name {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   color: var(--cinnabar);
-  margin-left: 24px;
-  text-shadow: 0 1px 2px rgba(168,51,42,0.15);
+  margin: 0;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
 }
+/* 朝代计数 */
 .timeline-dynasty__count {
   font-size: 0.82rem;
   color: var(--ink-soft);
@@ -623,15 +653,63 @@ body:has(.hero) .empty-state {
   background: rgba(176,141,87,0.12);
   padding: 3px 10px;
   border-radius: 2px;
+  transition: color 0.3s ease, background 0.3s ease;
+  flex-shrink: 0;
 }
-/* 朝代分隔线 */
-.timeline-dynasty__header::after {
+/* 展开/收起提示 */
+.timeline-dynasty__toggle {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+.timeline-dynasty.is-expanded .timeline-dynasty__toggle {
+  color: var(--parchment);
+  opacity: 0.8;
+}
+
+/* === 内容区 — 竹简展开动画 === */
+.timeline-dynasty__content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* 展开时背景 — 羊皮纸 */
+  background: var(--parchment);
+  background-image:
+    repeating-linear-gradient(135deg, rgba(176,141,87,0.03) 0 1px, transparent 1px 3px),
+    linear-gradient(145deg, rgba(255,250,235,0.3), transparent 60%);
+  border: 1px solid var(--gold);
+  border-top: none;
+}
+.timeline-dynasty.is-expanded .timeline-dynasty__content {
+  max-height: 5000px;
+  border-color: var(--cinnabar);
+  border-top: 1px solid rgba(168,51,42,0.2);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+/* 内容内层 — 留出左侧装订线空间 */
+.timeline-dynasty__inner {
+  padding: 20px 24px 20px 32px;
+  position: relative;
+}
+/* 内层左侧装订线延续 */
+.timeline-dynasty__inner::before {
   content: "";
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-  margin-left: 8px;
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--cinnabar);
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--cinnabar) 0 12px,
+    rgba(0,0,0,0.2) 12px 15px
+  );
+  opacity: 0.5;
 }
+
+/* 空朝代 */
 .timeline-empty {
   text-align: center;
   color: var(--ink-soft);
@@ -642,55 +720,37 @@ body:has(.hero) .empty-state {
   background: rgba(176,141,87,0.04);
   border-radius: 2px;
 }
-/* 条目列表 — 桌面双列，手机单列 */
+.is-empty .timeline-dynasty__header {
+  opacity: 0.5;
+  cursor: default;
+}
+.is-empty .timeline-dynasty__toggle {
+  display: none;
+}
+
+/* === 条目列表 — 双列 === */
 .timeline-list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
 }
-/* 条目 — 左侧连接线指向轴线 */
+/* 条目 */
 .timeline-item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+  display: block;
   padding: 14px 16px;
-  background: var(--parchment);
-  border: 1px solid rgba(138, 109, 59, 0.4);
+  background: rgba(232,220,196,0.5);
+  border: 1px solid rgba(138, 109, 59, 0.3);
   border-left: 3px solid var(--gold);
   border-radius: 2px;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-}
-/* 条目左侧连接线 — 指向时间轴 */
-.timeline-item::before {
-  content: "";
-  position: absolute;
-  left: -25px;
-  top: 20px;
-  width: 22px;
-  height: 1px;
-  background: rgba(138, 109, 59, 0.4);
-}
-/* 条目左侧小节点 — 轴线上的小圆点 */
-.timeline-item::after {
-  content: "";
-  position: absolute;
-  left: -30px;
-  top: 17px;
-  width: 7px;
-  height: 7px;
-  background: var(--cinnabar);
-  border-radius: 50%;
-  border: 2px solid var(--parchment);
-  box-shadow: 0 0 0 1px rgba(168,51,42,0.3);
-  z-index: 2;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 .timeline-item:hover {
   border-left-color: var(--cinnabar);
   transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(168,51,42,0.12);
+  box-shadow: 0 4px 12px rgba(168,51,42,0.1);
+  background: rgba(232,220,196,0.8);
 }
-.timeline-item__body { flex: 1; min-width: 0; }
+.timeline-item__body { min-width: 0; }
 .timeline-item__ordinal {
   font-size: 0.72rem;
   color: var(--cinnabar);
@@ -731,46 +791,39 @@ body:has(.hero) .empty-state {
     gap: 14px 16px;
   }
 }
-/* 大屏仍双列，但更宽 */
 @media (min-width: 1024px) {
-  .timeline-list {
-    gap: 16px 20px;
-  }
-  .timeline-dynasty__name {
-    font-size: 1.6rem;
-  }
+  .timeline-list { gap: 16px 20px; }
+  .timeline-dynasty__name { font-size: 1.5rem; }
 }
-/* 手机：轴线变细，条目单列 */
+/* 手机 */
 @media (max-width: 480px) {
-  .timeline-container {
-    padding-left: 24px;
-  }
-  .timeline-container::before {
-    left: 5px;
-  }
   .timeline-dynasty__header {
-    margin-left: -24px;
-  }
-  .timeline-dynasty__header::before {
-    left: 0;
-    width: 12px;
-    height: 12px;
+    padding: 14px 16px 14px 24px;
+    gap: 8px;
   }
   .timeline-dynasty__name {
-    font-size: 1.25rem;
-    margin-left: 18px;
+    font-size: 1.15rem;
   }
-  .timeline-item::before {
-    left: -19px;
-    width: 16px;
+  .timeline-dynasty__count {
+    font-size: 0.72rem;
   }
-  .timeline-item::after {
-    left: -23px;
-    width: 5px;
-    height: 5px;
+  .timeline-dynasty__toggle {
+    font-size: 0.78rem;
+  }
+  .timeline-dynasty__inner {
+    padding: 16px 16px 16px 24px;
   }
 }
 
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-dynasty__content {
+    transition: none;
+  }
+  .timeline-item:hover {
+    transform: none;
+  }
+}
 /* === 关于页 === */
 .about-content {
   background: var(--parchment);
