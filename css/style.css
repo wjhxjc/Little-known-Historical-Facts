@@ -624,43 +624,88 @@ body:has(.hero) .empty-state { color: var(--text-3); }
 }
 .related {
   max-width: 720px;
-  margin: 40px auto 0;
+  margin: 48px auto 0;
 }
 .related__title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
   color: var(--text-1);
   margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.related__title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: var(--brand);
+  border-radius: 2px;
 }
 .related__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 12px;
 }
 .related__item {
-  display: block;
-  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 14px 18px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   text-decoration: none;
   transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
 }
+/* 分类色左条 */
+.related__item[data-cat]::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--cat-color, var(--brand));
+}
+.related__item[data-cat="帝王将相"] { --cat-color: var(--cat-diwang); }
+.related__item[data-cat="风俗生活"] { --cat-color: var(--cat-fengsu); }
+.related__item[data-cat="文人轶事"] { --cat-color: var(--cat-wenren); }
+.related__item[data-cat="战争军事"] { --cat-color: var(--cat-zhanzheng); }
+.related__item[data-cat="文化典籍"] { --cat-color: var(--cat-dianji); }
+.related__item[data-cat="美食风物"] { --cat-color: var(--cat-meishi); }
 .related__item:hover {
   background: var(--surface);
-  border-color: var(--brand);
+  border-color: var(--border-2);
   transform: translateY(-2px);
   box-shadow: var(--shadow-2);
 }
+.related__item-cat {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: var(--cat-color, var(--brand));
+  letter-spacing: 0;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
 .related__item-title {
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   color: var(--text-1);
   font-weight: 500;
-  margin: 0 0 4px;
+  margin: 0 0 8px;
+  line-height: 1.5;
+  /* 两行截断 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.related__item-cat {
-  font-size: 0.74rem;
+.related__item-meta {
+  margin-top: auto;
+  font-size: 0.76rem;
   color: var(--text-3);
   letter-spacing: 0;
 }

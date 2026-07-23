@@ -134,17 +134,16 @@
   } else {
     var cardsHtml = related.map(function (f) {
       return ''
-        + '<a class="fact-card" href="fact.html?id=' + encodeURIComponent(f.id) + '">'
-        + '  <span class="fact-card__category">' + esc(f.category) + '</span>'
-        + '  <h3 class="fact-card__title">' + esc(f.title) + '</h3>'
-        + '  <p class="fact-card__summary">' + esc(f.summary) + '</p>'
-        + '  <div class="fact-card__meta">'
-        + '    <span class="fact-card__dynasty">' + esc(f.dynasty) + '</span>'
+        + '<a class="related__item" data-cat="' + esc(f.category) + '" href="fact.html?id=' + encodeURIComponent(f.id) + '">'
+        + '  <span class="related__item-cat">' + esc(f.category) + '</span>'
+        + '  <h3 class="related__item-title">' + esc(f.title) + '</h3>'
+        + '  <div class="related__item-meta">'
+        + '    <span>' + esc(f.dynasty) + '</span>'
         + '  </div>'
         + '</a>';
     }).join("");
     relatedSection.innerHTML = ''
       + '<h2 class="related__title">相关考辨</h2>'
-      + '<div class="related__grid">' + cardsHtml + '</div>';
+      + '<div class="related__list">' + cardsHtml + '</div>';
   }
 })();
