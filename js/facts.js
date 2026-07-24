@@ -1,8 +1,8 @@
 ﻿// js/facts.js
-// 历史冷知识数据集 — 20 条精选
+// 历史冷知识数据集 — 165 条
 // 全局变量 FACTS 挂在 window 上，供各页面渲染脚本（home.js / fact.js / timeline.js）读取。
 // Schema 固定：id / title / dynasty / category / summary / content / tags / source
-// dynasty 白名单：先秦 / 秦汉 / 魏晋南北朝 / 隋唐 / 宋 / 元 / 明 / 清
+// dynasty 白名单：先秦 / 秦 / 汉 / 魏晋南北朝 / 隋唐 / 五代十国 / 宋 / 元 / 明 / 清
 // category 白名单：帝王将相 / 风俗生活 / 文人轶事 / 战争军事 / 文化典籍 / 美食风物
 
 window.FACTS = [
